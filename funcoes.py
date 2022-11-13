@@ -1,3 +1,5 @@
+from random import randint
+
 def transforma_base(que):
     d = {}
     for q in que:
@@ -59,3 +61,38 @@ def valida_questoes(que):
         dicionario = valida_questao(q)
         e.append(dicionario)
     return e
+
+def sorteia_questao(que,n):
+    ques = que[n]
+    sorteio = randint(0,len(ques)-1)
+    return ques[sorteio]
+
+def sorteia_questao_inedita(que,n,sorteio1):
+    while True:
+        q = sorteia_questao(que,n)
+        if q not in sorteio1:
+            sorteio1.append(q)
+        break
+    return q
+
+def questao_para_texto(que,iq):
+    dicionario1 = '----------------------------------------\nQUESTAO {0}\n\n{1}\n\nRESPOSTAS:\nA: {2}\nB: {3}\nC: {4}\nD: {5}\n'.format(iq,que['titulo'],que['opcoes']['A'],que['opcoes']['B'],que['opcoes']['C'],que['opcoes']['D'])
+    return dicionario1 
+
+def gera_ajuda(que):
+    na = randint(1,2)
+    nl = {1:'A',2:'B',3:'C',4: 'D'}
+    tirou = []
+
+    c = que['correta']
+
+    while na != 0:
+        tira = nl[randint(1,4)]
+        if tira!= c and tira not in tirou:
+            na -= 1
+            tirou.append(que['opcoes'][tira])
+
+    if len(tirou) == 2:
+        return 'DICA:\nOpções certamente erradas: {0} | {1}'.format(tirou[0],tirou[1])
+    if len(tirou) == 1:
+        return'DICA:\nOpções certamente erradas: {0}'.format(tirou[0])
